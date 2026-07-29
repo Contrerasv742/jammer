@@ -211,4 +211,4 @@ sdkconfig
 compile_commands.json
 TODO.md
 dependencies.lock
-managed_components/
+# managed_components/

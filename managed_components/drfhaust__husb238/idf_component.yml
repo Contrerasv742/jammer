@@ -1,0 +1,20 @@
+dependencies:
+  idf:
+    version: '>=5.0.0'
+description: HUSB238 USB Power Delivery Sink Controller Driver
+documentation: https://github.com/drfhaust/husb238#readme
+issues: https://github.com/drfhaust/husb238/issues
+license: MIT
+maintainers:
+- Olaifa Oluwadara Daniel <akolaifa4@gmail.com>
+repository: https://github.com/drfhaust/husb238.git
+targets:
+- esp32
+- esp32s2
+- esp32s3
+- esp32c3
+- esp32c5
+- esp32c6
+- esp32h2
+url: https://github.com/drfhaust/husb238
+version: 1.0.1

@@ -1,0 +1,65 @@
+menu "HUSB238 Configuration"
+
+    config HUSB238_I2C_SDA_GPIO
+        int "I2C SDA GPIO number"
+        default 21
+        range 0 48
+        help
+            GPIO number for I2C SDA pin.
+
+    config HUSB238_I2C_SCL_GPIO
+        int "I2C SCL GPIO number"
+        default 22
+        range 0 48
+        help
+            GPIO number for I2C SCL pin.
+
+    config HUSB238_I2C_FREQ_HZ
+        int "I2C frequency (Hz)"
+        default 100000
+        range 10000 400000
+        help
+            I2C bus frequency in Hz. Standard is 100000 (100kHz).
+
+    config HUSB238_FORCE_5V_ON_CONNECT
+        bool "Force 5V on connect/reconnect"
+        default y
+        help
+            When enabled, output voltage is forced to safe 5V
+            whenever a PD source is connected or reconnected.
+
+    config HUSB238_TASK_STACK_SIZE
+        int "Controller task stack size"
+        default 4096
+        range 2048 8192
+        help
+            Stack size for the HUSB238 controller background task.
+
+    config HUSB238_TASK_PRIORITY
+        int "Controller task priority"
+        default 5
+        range 1 24
+        help
+            FreeRTOS priority for the controller background task.
+
+    choice HUSB238_LOG_LEVEL
+        prompt "Log verbosity"
+        default HUSB238_LOG_LEVEL_INFO
+        help
+            Set the default log level for HUSB238 component.
+
+        config HUSB238_LOG_LEVEL_NONE
+            bool "None"
+        config HUSB238_LOG_LEVEL_ERROR
+            bool "Error"
+        config HUSB238_LOG_LEVEL_WARN
+            bool "Warning"
+        config HUSB238_LOG_LEVEL_INFO
+            bool "Info"
+        config HUSB238_LOG_LEVEL_DEBUG
+            bool "Debug"
+        config HUSB238_LOG_LEVEL_VERBOSE
+            bool "Verbose"
+    endchoice
+
+endmenu
