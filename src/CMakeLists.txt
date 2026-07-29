@@ -6,4 +6,5 @@ idf_component_register(
     REQUIRES display
     REQUIRES motor
     REQUIRES husb238
+    REQUIRES esp_driver_ledc
 )

@@ -2,7 +2,7 @@
 #include "Display.h"
 #include "hsm.hpp"
 #include "config.h"
-#include "Motor.h"
+#include "motor.hpp"
 #include "husb238.h"
 
 // ESP-IDF
@@ -107,7 +107,7 @@ extern "C" void app_main(void)
         .intr_priority = 0,
         .trans_queue_depth = 0,
         .flags = {
-            .enable_internal_pullup = false,
+            .enable_internal_pullup = true,
             .allow_pd = false,
         },
     };
@@ -135,31 +135,26 @@ extern "C" void app_main(void)
     }
 
     ESP_LOGI(TAG, "Controller started");
-    ESP_LOGI(TAG, "Connect a USB-C PD power supply to see available voltages");
 
-    /* Main loop - demonstrate programmatic voltage control */
+    servo_init();
+
     while (1) {
-        vTaskDelay(pdMS_TO_TICKS(5000));
+        vTaskDelay(pdMS_TO_TICKS(2000));
 
-        /* Only interact when connected */
         if (husb238_controller_get_state(ctrl) == HUSB238_STATE_CONNECTED) {
-            int count = husb238_controller_get_voltage_count(ctrl);
-            int current = husb238_controller_get_current_index(ctrl);
+            esp_err_t error = husb238_controller_request_voltage(ctrl, 5000);
+            ESP_LOGI(TAG, "Requested 5V: %s", esp_err_to_name(error));
 
-            ESP_LOGI(TAG, "Available: %d voltages, current index: %d", count, current);
-
-            /* Print available voltages */
-            for (int i = 0; i < count; i++) {
-                husb238_voltage_info_t info;
-                if (husb238_controller_get_voltage_info(ctrl, i, &info) == ESP_OK) {
-                    ESP_LOGI(TAG, "  [%d] %dV @ %dmA %s",
-                             i, info.voltage_mv / 1000, info.max_current_ma,
-                             (i == current) ? "<-- current" : "");
-                }
+            // Only command the servo once the rail is actually at 5V
+            if (husb238_controller_get_voltage_mv(ctrl) == 5000) {
+                servo_write_us(SERVO_MIN_US);
+                vTaskDelay(pdMS_TO_TICKS(800));
+                servo_write_us(SERVO_MID_US);
+                vTaskDelay(pdMS_TO_TICKS(800));
+                servo_write_us(SERVO_MAX_US);
+                vTaskDelay(pdMS_TO_TICKS(800));
             }
-            esp_err_t error = husb238_controller_request_voltage(ctrl, 20000);
-
-            ESP_LOGI(TAG, "Requested Voltage: %s", esp_err_to_name(error));
         }
     }
+
 }
