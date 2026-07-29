@@ -5,4 +5,5 @@ idf_component_register(
     REQUIRES esp_timer
     REQUIRES display
     REQUIRES motor
+    REQUIRES husb238
 )
