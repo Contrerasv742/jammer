@@ -19,13 +19,6 @@ static const char *TAG { "Main" };
 // ESP-IDF
 #include "esp_timer.h"
 
-#include <cstdint>
-
-/* Shared LCD Variables */
-inline constexpr int LCD_COLS{16};
-inline constexpr int LCD_ROWS{2};
-inline constexpr uint8_t RGB_ADDR{0x2D};
-
 const int colorR { 80 };
 const int colorG { 10 };
 const int colorB { 200 };
