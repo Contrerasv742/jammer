@@ -1,16 +1,30 @@
 // Components
-#include "Display.h"
-#include "hsm.hpp"
-#include "config.h"
 #include "motor.hpp"
 #include "husb238.h"
 
 // ESP-IDF
+#include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "esp_log.h"
+
+static const char *TAG { "Main" };
+
+// #define DISPLAY
+#ifdef DISPLAY
+// Components
+#include "Display.h"
+#include "hsm.hpp"
+#include "config.h"
+
+// ESP-IDF
 #include "esp_timer.h"
 
-static const char *TAG { "Debug" };
+#include <cstdint>
+
+/* Shared LCD Variables */
+inline constexpr int LCD_COLS{16};
+inline constexpr int LCD_ROWS{2};
+inline constexpr uint8_t RGB_ADDR{0x2D};
 
 const int colorR { 80 };
 const int colorG { 10 };
@@ -33,7 +47,6 @@ void setup() {
     vTaskDelay(pdMS_TO_TICKS(100));
 }
 
-/*
 extern "C" void app_main(void) {
     ESP_LOGI(TAG, "Initializing LCD...");
     display.init();
@@ -46,34 +59,16 @@ extern "C" void app_main(void) {
         hsm_run();
     }
 }
-*/
+#endif
+
+#define SERVO
+#ifdef SERVO
 
 #include "sdkconfig.h"
 #define I2C_MASTER_SCL_IO           CONFIG_I2C_MASTER_SCL       /*!< GPIO number used for I2C master clock */
 #define I2C_MASTER_SDA_IO           CONFIG_I2C_MASTER_SDA       /*!< GPIO number used for I2C master data  */
 #define I2C_MASTER_NUM              I2C_NUM_0                   /*!< I2C port number for master dev */
 #define I2C_MASTER_FREQ_HZ          CONFIG_I2C_MASTER_FREQUENCY /*!< I2C master clock frequency */
-
-// extern "C" void app_main(void) {
-//     husb238_controller_config_t config = {
-//         .sda_gpio = I2C_MASTER_SDA_IO,
-//         .scl_gpio = I2C_MASTER_SCL_IO,
-//         .i2c_freq_hz = I2C_MASTER_FREQ_HZ,
-//         .i2c_bus = (i2c_master_bus_t *) 10,
-//         .force_5v_on_connect = true,
-//         .i2c_addr = 
-//     };
-//
-//     husb238_controller_handle_t ctrl;
-//     husb238_controller_init(&config, &ctrl);
-//
-//     // Change voltage programmatically
-//     husb238_controller_next_voltage(ctrl);
-//     // Or select specific voltage index
-//     husb238_controller_select_voltage(ctrl, 2);
-// }
-
-// #include "husb238.h"
 
 // static const char *TAG = "husb238_basic";
 
@@ -107,7 +102,7 @@ extern "C" void app_main(void)
         .intr_priority = 0,
         .trans_queue_depth = 0,
         .flags = {
-            .enable_internal_pullup = true,
+            .enable_internal_pullup = false,
             .allow_pd = false,
         },
     };
@@ -158,3 +153,5 @@ extern "C" void app_main(void)
     }
 
 }
+
+#endif

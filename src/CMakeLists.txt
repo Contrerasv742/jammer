@@ -7,4 +7,5 @@ idf_component_register(
     REQUIRES motor
     REQUIRES husb238
     REQUIRES esp_driver_ledc
+    REQUIRES freertos
 )
