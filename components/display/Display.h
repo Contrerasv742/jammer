@@ -1,3 +1,4 @@
+#pragma once
 /*!
  * @file Display.h
  * @brief Display class infrastructure
@@ -5,309 +6,260 @@
  * @licence     The MIT License (MIT)
  * @maintainer [yangfeng](feng.yang@dfrobot.com)
  * @version  V1.0
- * @date  2021-09-24
- * @url https://github.com/DFRobot/DFRobot_RGBLCD1602
+ * @maintainer [Victor P.C.](contrerasv742@gmail.com)
+ * @date  2026-07-16
  */
 
-#ifndef __Display_H__
-#define __Display_H__
 #include <Wire.h>
-#include <inttypes.h>
+#include <cstdint>
 #include <stdio.h>
 #include <string.h>
 
-/*!
- *  @brief Device I2C Arress
- */
+
+using namespace std;
+
+/*! @brief Device I2C Address */
 #define LCD_ADDRESS     (0x7c>>1)
 
-/*!
- *  @brief color define
- */ 
-#define WHITE           0
-#define RED             1
-#define GREEN           2
-#define BLUE            3
+/*! @brief color define */ 
+struct Rgb {
+    uint8_t r;
+    uint8_t g;
+    uint8_t b;
+};
 
-#define REG_MODE1       0x00
-#define REG_MODE2       0x01
-#define REG_OUTPUT      0x08
+enum class Color : uint8_t { white, red, green, blue };
 
-/*!
- *  @brief commands
- */
-#define LCD_CLEARDISPLAY 0x01
-#define LCD_RETURNHOME 0x02
-#define LCD_ENTRYMODESET 0x04
-#define LCD_DISPLAYCONTROL 0x08
-#define LCD_CURSORSHIFT 0x10
-#define LCD_FUNCTIONSET 0x20
-#define LCD_SETCGRAMADDR 0x40
-#define LCD_SETDDRAMADDR 0x80
+namespace reg {
+    inline constexpr uint8_t mode_1 = 0x00;
+    inline constexpr uint8_t mode_2 = 0x01;
+    inline constexpr uint8_t output = 0x08;
+}
+namespace lcd {
+    /*!
+     *  @brief LCD commands
+     */
 
-/*!
- *  @brief flags for display entry mode
- */
-#define LCD_ENTRYRIGHT 0x00
-#define LCD_ENTRYLEFT 0x02
-#define LCD_ENTRYSHIFTINCREMENT 0x01
-#define LCD_ENTRYSHIFTDECREMENT 0x00
+    namespace cmd
+    {
+        inline constexpr uint8_t clear_display   = 0x01;
+        inline constexpr uint8_t return_home     = 0x02;
+        inline constexpr uint8_t entry_mode_set  = 0x04;
+        inline constexpr uint8_t display_control = 0x08;
+        inline constexpr uint8_t cursor_shift    = 0x10;
+        inline constexpr uint8_t function_set    = 0x20;
+        inline constexpr uint8_t set_cgram_addr  = 0x40;
+        inline constexpr uint8_t set_ddram_addr  = 0x80;
+    }
 
-/*!
- *  @brief flags for display on/off control
- */
-#define LCD_DISPLAYON 0x04
-#define LCD_DISPLAYOFF 0x00
-#define LCD_CURSORON 0x02
-#define LCD_CURSOROFF 0x00
-#define LCD_BLINKON 0x01
-#define LCD_BLINKOFF 0x00
+    /* @brief flags entry for display entry mode */
+    namespace display::flag
+    {
+        inline constexpr uint8_t right             = 0x00;
+        inline constexpr uint8_t left              = 0x02;
+        inline constexpr uint8_t shift_increment   = 0x01;
+        inline constexpr uint8_t shift_decrement   = 0x00;
+    }
 
-/*!
- *  @brief flags for display/cursor shift
- */
-#define LCD_DISPLAYMOVE 0x08
-#define LCD_CURSORMOVE 0x00
-#define LCD_MOVERIGHT 0x04
-#define LCD_MOVELEFT 0x00
+    /* @brief flags for display/blink on/off control */
+    namespace display
+    {
+        inline constexpr uint8_t on         = 0x04;
+        inline constexpr uint8_t off        = 0x00;
 
-/*!
- *  @brief flags for function set
- */
-#define LCD_8BITMODE 0x10
-#define LCD_4BITMODE 0x00
-#define LCD_2LINE 0x08
-#define LCD_1LINE 0x00
-#define LCD_5x10DOTS 0x04
-#define LCD_5x8DOTS 0x00
+        inline constexpr uint8_t move       = 0x08;
+        inline constexpr uint8_t move_right = 0x04;
+        inline constexpr uint8_t move_left  = 0x00;
+
+        inline constexpr uint8_t blink_on    = 0x01;
+        inline constexpr uint8_t blink_off   = 0x00;
+    }
+
+    /* @brief flags for cursor control */
+    namespace cursor
+    {
+        inline constexpr uint8_t on = 0x02;
+        inline constexpr uint8_t off = 0x00;
+        inline constexpr uint8_t move = 0x00;
+        inline constexpr uint8_t shift    = 0x10;
+    }
+
+
+    /* @brief flags for function set */
+    namespace function
+    {
+        inline constexpr uint8_t bits_8    = 0x10;
+        inline constexpr uint8_t bits_4    = 0x00;
+        inline constexpr uint8_t lines_2   = 0x08;
+        inline constexpr uint8_t lines_1   = 0x00;
+        inline constexpr uint8_t dots_5x10 = 0x04;
+        inline constexpr uint8_t dots_5x8  = 0x00;
+    }
+}
 
 class Display {
 
 public:
-  /**
-   * @fn Display
-   * @brief Constructor
-   */
-  Display(uint8_t RGBAddr,uint8_t lcdCols=16,uint8_t lcdRows=2,TwoWire *pWire=&Wire,uint8_t lcdAddr=LCD_ADDRESS);
+    /* @brief Constructor */
+    Display(uint8_t RGBAddr,uint8_t lcdCols=16,uint8_t lcdRows=2,TwoWire *pWire=&Wire,uint8_t lcdAddr=LCD_ADDRESS);
 
-  /**
-   * @fn init
-   * @brief initialize the LCD and master IIC
-   */ 
-  void init();
+    /* @brief initialize the LCD and master IIC */ 
+    void init();
 
-  /**
-   * @fn clear
-   * @brief clear the display and return the cursor to the initial position (position 0)
-   */
-  void clear();
+    /* @brief clear the display and return the cursor to the initial 
+     * position (position 0) */
+    void clear();
 
-  /**
-   * @fn home
-   * @brief return the cursor to the initial position (0,0)
-   */
-  void home();
+    /* @brief return the cursor to the initial position (0,0) */
+    void home();
+
+    /* @brief Turn off the display */
+    void noDisplay();
 
     /**
-     * @fn noDisplay
-     * @brief Turn off the display
-     */
-  void noDisplay();
-
-  /**
-   * @fn display
    * @brief Turn on the display
    */
-  void display();
+    void display();
 
-  /**
-   * @fn stopBlink
-   * @brief Turn  off the blinking showCursor
-   */
-  void stopBlink();
+    /* @brief Turn  off the blinking showCursor */
+    void stopBlink();
 
-  /**
-   * @fn blink
-   * @brief Turn on  the blinking showCursor
-   */
-  void blink();
+    /* @brief Turn on  the blinking showCursor */
+    void blink();
 
-  /**
-   * @fn noCursor
-   * @brief Turn off the underline showCursor 
-   */
-  void noCursor();
+    /* @brief Turn off the underline showCursor */
+    void noCursor();
 
-  /**
-   * @fn cursor
-   * @brief Turn on the underline showCursor 
-   */
-  void cursor();
+    /* @brief Turn on the underline showCursor */
+    void cursor();
 
-  /**
-   * @fn scrollDisplayLeft
-   * @brief scroll left to display
-   */
-  void scrollDisplayLeft();
+    /* @brief scroll left to display */
+    void scrollDisplayLeft();
 
-  /**
-   * @fn scrollDisplayRight
-   * @brief scroll right to display
-   */
-  void scrollDisplayRight();
- 
-  /**
-   * @fn leftToRight
-   * @brief This is for text that flows Left to Right
-   */
-  void leftToRight();
- 
-  /**
-   * @fn rightToLeft
-   * @brief This is for text that flows Right to Left
-   */
-  void rightToLeft();
+    /* @brief scroll right to display */
+    void scrollDisplayRight();
 
-  /**
-   * @fn noAutoscroll
-   * @brief This will 'left justify' text from the showCursor
-   */
-  void noAutoscroll();
- 
-  /**
-   * @fn autoscroll
-   * @brief This will 'right justify' text from the showCursor
-   */
-  void autoscroll();
-   
-  /**
-   * @fn customSymbol
-   * @brief Allows us to fill the first 8 CGRAM locations with custom characters
-   * @param location substitute character range (0-7)
-   * @param charmap  character array the size is 8 bytes
-   */
-  void customSymbol(uint8_t location, uint8_t charmap[]);
+    /* @brief This is for text that flows Left to Right */
+    void leftToRight();
 
-  /**
-   * @fn setCursor
-   * @brief set cursor position
-   * @param col columns optional range 0-15
-   * @param row rows optional range 0-1，0 is the first row, 1 is the second row
-   */
-  void setCursor(uint8_t col, uint8_t row);
-  
-  /**
-   * @fn setRGB
+    /* @brief This is for text that flows Right to Left */
+    void rightToLeft();
+
+    /* @brief This will 'left justify' text from the showCursor */
+    void noAutoscroll();
+
+    /* @brief This will 'right justify' text from the showCursor */
+    void autoscroll();
+
+    /* @brief Allows us to fill the first 8 CGRAM locations with 
+     *        custom characters 
+     * @param location substitute character range (0-7)
+     * @param charmap  character array the size is 8 bytes
+     */
+    void customSymbol(uint8_t location, uint8_t charmap[]);
+
+    /** @brief set cursor position
+      * @param col columns optional range 0-15
+      * @param row rows optional range 0-1，0 is the first row, 1 is 
+      *        the second row
+     **/
+    void setCursor(uint8_t col, uint8_t row);
+
+    /**
    * @brief set RGB
    * @param r  red   range(0-255)
    * @param g  green range(0-255)
    * @param b  blue  range(0-255)
    */
-  void setRGB(uint8_t r, uint8_t g, uint8_t b);
+    void setRGB(uint8_t r, uint8_t g, uint8_t b);
 
-  /**
-   * @fn setPWM
+    /**
    * @brief set backlight PWM output
    * @param color  backlight color  Preferences：REG_RED\REG_GREEN\REG_BLUE
    * @param pwm  color intensity   range(0-255)
    */
-  void setPWM(uint8_t color, uint8_t pwm){setReg(color, pwm); if(_RGBAddr==0x6B){setReg(0x07, pwm);}}      // set pwm
+    void setPWM(uint8_t color, uint8_t pwm){setReg(color, pwm); if(RGBAddr_==0x6B){setReg(0x07, pwm);}}      // set pwm
 
-  /**
-   * @fn setColor
+    /**
    * @brief backlight color
    * @param color  backlight color  Preferences： WHITE\RED\GREEN\BLUE
    */
-  void setColor(uint8_t color);
+    void setColor(Color color);
 
-  /**
-   * @fn closeBacklight
-   * @brief close the backlight
-   */
-  void closeBacklight(){setRGB(0, 0, 0);}
+    /* @brief close the backlight */
+    void closeBacklight(){setRGB(0, 0, 0);}
 
-  /**
-   * @fn setColorWhite
-   * @brief set the backlight to white
-   */
-  void setColorWhite(){setRGB(255, 255, 255);}
+    /* @brief set the backlight to white */
+    void setColorWhite(){setRGB(255, 255, 255);}
 
     /**
- * @fn write
- * @brief write character
- * @param data the written data
- */
+     * @brief write character
+     * @param data the written data
+     */
     virtual size_t write(uint8_t data);
 
     /**
- * @fn write
- * @brief write string
- * @param str the string to write
- */
+     * @brief write string
+     * @param str the string to write
+     */
     size_t write(const char* str);
 
     /**
- * @fn write
- * @brief write buffer
- * @param buffer the data buffer
- * @param size buffer size
- */
+     * @brief write buffer
+     * @param buffer the data buffer
+     * @param size buffer size
+     */
     size_t write(const uint8_t* buffer, size_t size);
 
     /**
-   * @fn command
-   * @brief send command
-   * @param data the sent command
-   */
-  void command(uint8_t data);
+       * @brief send command
+       * @param data the sent command
+       */
+    void command(uint8_t data);
 
-  /**
-   * @fn setBacklight
-   * @brief set the backlight
-   * @param mode  true indicates the backlight is turned on and set to white, false indicates the backlight is turned off
-   */
-  void setBacklight(bool mode);
-  
+    /**
+       * @brief set the backlight
+       * @param mode  true indicates the backlight if turned on and set
+       *        to white, false indicates the backlight is turned off
+       */
+    void setBacklight(bool mode);
+
 private:
-  /**
-   * @fn begin
+    /**
    * @brief the initialization function
-   * @param row rows optional range 0-1，0 is the first row, 1 is the second row
+   * @param row rows optional range 0-1，0 is the first row, 1 is the
+   *        second row
    * @param charSize  character size LCD_5x8DOTS\LCD_5x10DOTS
    */
-  void begin(uint8_t rows, uint8_t charSize = LCD_5x8DOTS);
+    void begin(uint8_t rows, uint8_t charSize = lcd::function::dots_5x8);
 
-  /**
-   * @fn send
+    /**
    * @brief set cursor
    * @param data the data to send
    * @param len length of the data
    */
-  void send(uint8_t *data, uint8_t len);
+    void send(uint8_t *data, uint8_t len);
 
-  /**
-   * @fn setReg
+    /**
    * @brief Configure related registers
    * @param addr  The address of the register to be operated on
    * @param data  The data to be written
    */
-  void setReg(uint8_t addr, uint8_t data);
+    void setReg(uint8_t addr, uint8_t data);
 
-  uint8_t _showFunction;
-  uint8_t _showControl;
-  uint8_t _showMode;
-  uint8_t _initialized;
-  uint8_t _numLines,_currLine;
-  uint8_t _lcdAddr;
-  uint8_t _RGBAddr;
-  uint8_t _cols;
-  uint8_t _rows;
-  TwoWire *_pWire;
+    uint8_t showFunction_;
+    uint8_t showControl_;
+    uint8_t showMode_;
+    uint8_t initialized_;
+    uint8_t numLines_,currLine_;
+    uint8_t lcdAddr_;
+    uint8_t RGBAddr_;
+    uint8_t cols_;
+    uint8_t rows_;
+    TwoWire *pWire_;
 public:
-  uint8_t REG_RED      =   0 ;       // pwm2
-  uint8_t REG_GREEN    =   0 ;       // pwm1
-  uint8_t REG_BLUE     =   0 ;       // pwm0
-  uint8_t REG_ONLY     =   0 ;       // pwm0
+    uint8_t REG_RED   { 0 };       // pwm2
+    uint8_t REG_GREEN { 0 };       // pwm1
+    uint8_t REG_BLUE  { 0 };       // pwm0
+    uint8_t REG_ONLY  { 0 };       // pwm0
 };
-
-#endif

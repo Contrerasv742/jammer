@@ -1,3 +1,5 @@
+#pragma once
+
 #include <stdio.h>
 #include <cstdint>
 #include <cstddef>
@@ -6,8 +8,6 @@
 #include "freertos/task.h"
 #include "esp_log.h"
 #include "driver/i2c_master.h"
-#include <math.h>
-#include "esp_rom_sys.h"
 
 #define I2C_MASTER_SCL_IO           CONFIG_I2C_MASTER_SCL       /*!< GPIO number used for I2C master clock */
 #define I2C_MASTER_SDA_IO           CONFIG_I2C_MASTER_SDA       /*!< GPIO number used for I2C master data  */

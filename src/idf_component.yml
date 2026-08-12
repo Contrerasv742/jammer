@@ -1,0 +1,5 @@
+dependencies:
+  espressif/servo:
+    version: '*'
+  drfhaust/husb238:
+    version: '*'
