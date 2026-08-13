@@ -65,10 +65,19 @@ This allows for proper Neovim diagnostics.
     Reference: <a href="https://har.gsfc.nasa.gov/uploads/images_db/Screen%20Shot%202014-06-16%20at%203_00_45%20PM.png">NASA Engineer Handbook</a>
 </p>
 
-# System Block Diagram
+# Hierarchical State Machine
 <p align="center">
     <img 
         src="assets/hsm.png" 
+        width="800" 
+        alt="Hierarchial State Machine"
+    />
+</p>
+
+# Schematic
+<p align="center">
+    <img 
+        src="assets/schematic.png" 
         width="800" 
         alt="Hierarchial State Machine"
     />
