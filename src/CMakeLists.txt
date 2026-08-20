@@ -1,13 +1,15 @@
 idf_component_register(
     SRCS "main.cpp" "hsm.cpp"
     INCLUDE_DIRS "."
+
+    # ESP
     REQUIRES esp_driver_i2c
     REQUIRES esp_timer
-    REQUIRES display
-    REQUIRES motor
-    REQUIRES husb238
     REQUIRES esp_driver_ledc
     REQUIRES freertos
-    REQUIRES esp_driver_gpio
-    REQUIRES esp_driver_gptimer
+
+    # Components
+    REQUIRES display
+    REQUIRES stepper
+    REQUIRES husb238
 )
