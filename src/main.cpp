@@ -7,7 +7,7 @@
 #include "freertos/task.h"
 #include "esp_log.h"
 
-static const char *TAG { "Main" };
+[[maybe_unused]] static const char *TAG { "Main" };
 
 // #define DISPLAY
 #ifdef DISPLAY
@@ -54,7 +54,7 @@ extern "C" void app_main(void) {
 }
 #endif
 
-#define SERVO
+// #define SERVO
 #ifdef SERVO
 
 #include "sdkconfig.h"
@@ -146,5 +146,17 @@ extern "C" void app_main(void)
     }
 
 }
-
 #endif
+
+#include "stepper.hpp"
+
+extern "C" void app_main(void) {
+    stepper_init();
+    stepper_start_sweep();     // motor now bounces back and forth on its own
+
+    while (true) {
+        // your detection code goes here; tag hits with the current angle:
+        // if (camera_detected()) mark(stepper_position());
+        vTaskDelay(pdMS_TO_TICKS(10));
+    }
+}

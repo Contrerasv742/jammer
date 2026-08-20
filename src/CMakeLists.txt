@@ -8,4 +8,6 @@ idf_component_register(
     REQUIRES husb238
     REQUIRES esp_driver_ledc
     REQUIRES freertos
+    REQUIRES esp_driver_gpio
+    REQUIRES esp_driver_gptimer
 )
