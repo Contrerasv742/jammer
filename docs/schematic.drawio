@@ -1,6 +1,6 @@
 <mxfile host="Electron">
   <diagram name="Page-1" id="EdvxR_YDTkSEgY9-E4B7">
-    <mxGraphModel dx="729" dy="555" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="760" dy="578" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -101,7 +101,7 @@
         <mxCell id="YTTaAt1FLowVvHWPm8BV-22" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="SDA" vertex="1">
           <mxGeometry height="10" width="30" x="221" y="245" as="geometry" />
         </mxCell>
-        <mxCell id="YTTaAt1FLowVvHWPm8BV-23" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="SDL" vertex="1">
+        <mxCell id="YTTaAt1FLowVvHWPm8BV-23" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="SCL" vertex="1">
           <mxGeometry height="10" width="25" x="223.5" y="285" as="geometry" />
         </mxCell>
         <mxCell id="YTTaAt1FLowVvHWPm8BV-24" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontSize=8;rotation=-90;" value="GPIO 21" vertex="1">
@@ -281,13 +281,13 @@
             <mxPoint x="560" y="290" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="YTTaAt1FLowVvHWPm8BV-61" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;strokeColor=light-dark(#000000,#FF3333);" value="">
+        <mxCell id="YTTaAt1FLowVvHWPm8BV-61" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;strokeColor=light-dark(#000000,#FF3333);endFill=1;" value="">
           <mxGeometry height="50" relative="1" width="50" as="geometry">
             <mxPoint x="560" y="290" as="sourcePoint" />
             <mxPoint x="540" y="290" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="YTTaAt1FLowVvHWPm8BV-62" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;strokeColor=light-dark(#000000,#FF3333);" value=" ">
+        <mxCell id="YTTaAt1FLowVvHWPm8BV-62" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;strokeColor=light-dark(#000000,#FF3333);startArrow=none;startFill=0;endFill=1;" value=" ">
           <mxGeometry height="50" relative="1" width="50" as="geometry">
             <mxPoint x="560" y="329.89" as="sourcePoint" />
             <mxPoint x="540" y="329.89" as="targetPoint" />
@@ -341,6 +341,15 @@
         </mxCell>
         <mxCell id="YTTaAt1FLowVvHWPm8BV-76" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontSize=8;rotation=0;" value="V+" vertex="1">
           <mxGeometry height="15" width="15" x="122.5" y="335" as="geometry" />
+        </mxCell>
+        <mxCell id="HsyfZrZB5slG5Ni7fDuH-3" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="GND" vertex="1">
+          <mxGeometry height="30" width="60" x="200" y="480" as="geometry" />
+        </mxCell>
+        <mxCell id="HsyfZrZB5slG5Ni7fDuH-4" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="GND" vertex="1">
+          <mxGeometry height="30" width="60" x="20" y="450" as="geometry" />
+        </mxCell>
+        <mxCell id="HsyfZrZB5slG5Ni7fDuH-5" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="GND" vertex="1">
+          <mxGeometry height="30" width="60" x="20" y="315" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
