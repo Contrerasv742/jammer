@@ -18,7 +18,10 @@ In order to work with Jammer you need an *ESP32* device working with the *ESP-ID
 + IFR Laser
 
 ## Software
-For the ESP32DEVKITV1 you need to determine what drivers to install. On Linux the drivers may be included such as _Arch Linux_. However, for others, the drivers are most likely the CP210X drivers. They may vary depending on the chip manufacturer but is located on the MC.
+For the ESP32DEVKITV1 you need to determine what drivers to install. On Linux
+the drivers may be included, such as on my OS of choice, _Arch Linux_. However,
+for others, the drivers are most likely the *CP210X drivers*. They may vary
+depending on the chip manufacturer, check the MC for chip specifications. 
 
 ## Terminal/IDE Setup
 ### ESP-IDF
@@ -42,7 +45,7 @@ alias get_idf='. $HOME/esp/esp-idf/export.sh'
 ```
 
 ### IDE
-My IDE of choice is Neovim. In order for diagonostics to work properly, 
+My IDE of choice is Neovim. In order for diagnostics to work properly, 
 compile commands have to be linked:
 
 ```bash
